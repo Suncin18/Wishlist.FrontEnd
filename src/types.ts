@@ -15,9 +15,16 @@ export interface ItemResponse {
   list_id: number;
 }
 
+export interface ListShareResponse {
+  id: number;
+  list_id: number;
+  shared_with_user_id: number;
+}
+
 export interface ListResponse {
   id: number;
   title: string;
   owner_id: number;
   items: ItemResponse[];
+  shares: ListShareResponse[];
 }

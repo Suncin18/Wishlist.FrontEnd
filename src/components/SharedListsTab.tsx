@@ -1,4 +1,3 @@
-import { CheckCircle } from 'lucide-react';
 import type { ListResponse } from '../types';
 
 interface SharedListsTabProps {

@@ -134,6 +134,32 @@ export default function App() {
     loadData();
   };
 
+  const handleRemoveShare = async (listId: number, shareId: number) => {
+    try {
+      // Aquí irá tu llamada al backend en el futuro: api.removeShare(listId, shareId)
+      console.log(`Eliminar acceso individual: Lista ${listId}, Share ${shareId}`);
+      
+      // Optimismo en UI: Recargamos los datos para reflejar el cambio
+      // await loadData(); 
+    } catch (err: any) {
+      alert(err.message || "Error al eliminar el acceso");
+    }
+  };
+
+  const handleRemoveAllShares = async (listId: number) => {
+    const confirmar = window.confirm("¿Estás seguro de que querés dejar de compartir esta lista con todo el mundo?");
+    if (!confirmar) return;
+
+    try {
+      // Aquí irá tu llamada al backend en el futuro: api.removeAllShares(listId)
+      console.log(`Eliminar TODOS los accesos de la lista: ${listId}`);
+      
+      // await loadData();
+    } catch (err: any) {
+      alert(err.message || "Error al remover todos los accesos");
+    }
+  };
+
 // Render condicional si no hay inicio de sesión
   if (!token) {
     return (
@@ -195,6 +221,8 @@ export default function App() {
             shareEmail={shareEmail}
             setShareEmail={setShareEmail}
             handleShareList={handleShareList}
+            handleRemoveShare={handleRemoveShare}
+            handleRemoveAllShares={handleRemoveAllShares}
           />
         ) : (
           <SharedListsTab 
