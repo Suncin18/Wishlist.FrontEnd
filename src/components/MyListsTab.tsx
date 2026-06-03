@@ -32,27 +32,27 @@ export default function MyListsTab({
 }: MyListsTabProps) {
   return (
     <div className="container-fluid">
-      <div className="row mb-5">
-        <div className="col-12 col-md-8 col-lg-6 mt-4">
-          <form onSubmit={handleCreateList} className="input-group">
-            <input 
-              type="text" 
-              placeholder="Nombre de la nueva lista (ej: Regalos Cumple)..." 
-              className="form-control form-control-lg" 
-              value={newListTitle} 
-              onChange={e => setNewListTitle(e.target.value)} 
-            />
-            <button type="submit" className="btn btn-primary d-flex align-items-center px-4">
-              <Plus size={18} />
-              <span>Crear</span>
-            </button>
-          </form>
+      <form onSubmit={handleCreateList} className="row g-2 max-w-md mx-auto my-3">
+        <div className="col-12 col-md-6">
+          <input 
+            type="text" 
+            placeholder="Nombre de la nueva lista (ej: Regalos Aniversario)" 
+            className="form-control form-control-lg" 
+            value={newListTitle} 
+            onChange={e => setNewListTitle(e.target.value)} 
+          />
         </div>
-      </div>
+        <div className="col-12 col-md-6">
+          <button type="submit" className="btn btn-primary d-flex align-items-center justify-content-center w-100 py-2 fw-medium">
+            <Plus size={18} />
+            <span>Crear</span>
+          </button>
+        </div>
+      </form>
 
       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3">
         {myLists.map(list => (
-          <div key={list.id} className="col">
+          <div key={list.id} className="col my-2">
             <div className="card h-100 shadow-sm border-secondary-subtle">
               
               <div className="card-body d-flex flex-column justify-content-between">
@@ -65,8 +65,12 @@ export default function MyListsTab({
                     {list.items.map(item => (
                       <div key={item.id} className="list-group-item px-0 d-flex justify-content-between align-items-center bg-transparent">
                         <div>
-                          <span className="fw-medium text-secondary">{item.name}. </span>
-                          Precio: {item.price && <span className="text-muted ms-2">(${item.price})</span>}
+                          <span className="fw-medium text-secondary">{item.name}</span>
+                        </div>
+                        <div>
+                          {item.price 
+                          ? <span className="text-muted ms-2">Precio: (₡{item.price})</span> 
+                          : <span className="text-muted ms-2">Precio: N/A</span>}
                         </div>
                         {item.link && (
                           <a href={item.link} target="_blank" rel="noreferrer" className="btn btn-link btn-sm p-0 text-decoration-none">

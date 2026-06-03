@@ -8,6 +8,8 @@ import { AuthContainer, LoginForm, RegisterForm } from './components/auth';
 import MyListsTab from './components/MyListsTab';
 import SharedListsTab from './components/SharedListsTab';
 
+import { Toaster, toast } from 'react-hot-toast';
+
 export default function App() {
   const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
   const [isRegister, setIsRegister] = useState(false);
@@ -83,10 +85,18 @@ export default function App() {
 
   const handleCreateList = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newListTitle.trim()) return;
-    await api.createList(newListTitle);
-    setNewListTitle("");
-    loadData();
+    if (!newListTitle.trim()) {
+      toast.error("Por favor, ingresá un título para la lista");
+      return;
+    }
+
+    try{
+      await api.createList(newListTitle);
+      setNewListTitle("");
+      loadData();
+    } catch (err) {
+      toast.error("No se pudo crear la lista");
+    }
   };
 
   const handleAddItem = async (listId: number) => {
@@ -143,18 +153,28 @@ export default function App() {
 
   return (
     <div className="container-fluid">
+      <Toaster position="top-right" reverseOrder={false} />
       <Navbar onLogout={handleLogout} />
 
       {/* Main Container */}
       <div className="mt-4">
-        {/* Pestañas */}
-        <div className="">
-          <button onClick={() => setActiveTab("my")} className={`px-4 mx-3 py-2 ${activeTab === "my" ? "bg-primary-subtle" : "bg-light"}`}>
-            Mis Listas de Deseos
-          </button>
-          <button onClick={() => setActiveTab("shared")} className={`px-4 mx-3 py-2 ${activeTab === "shared" ? "bg-primary-subtle" : "bg-light"}`}>
-            Listas Compartidas Conmigo
-          </button>
+        <div className="row g-2 max-w-md mx-auto my-3">
+          <div className="col-12 col-md-6">
+            <button 
+              onClick={() => setActiveTab("my")} 
+              className={`btn w-100 py-2 fw-medium ${activeTab === "my" ? "btn-primary" : "btn-light border"}`}
+            >
+              Mis Listas de Deseos
+            </button>
+          </div>
+          <div className="col-12 col-md-6">
+            <button 
+              onClick={() => setActiveTab("shared")} 
+              className={`btn w-100 py-2 fw-medium ${activeTab === "shared" ? "btn-primary" : "btn-light border"}`}
+            >
+              Listas Compartidas Conmigo
+            </button>
+          </div>
         </div>
 
         {/* Contenido Dinámico según la Pestaña Activa */}
