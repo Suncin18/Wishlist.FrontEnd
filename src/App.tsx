@@ -15,7 +15,7 @@ export default function App() {
   const [error, setError] = useState("");
 
   // Form States
-  const [authForm, setAuthForm] = useState({ email: "", password: "", name: "", gender: "Male", age: 18 });
+  const [authForm, setAuthForm] = useState({ email: "", password: "", confirmedPassword: "", name: "", gender: "Male", age: 18 });
   const [newListTitle, setNewListTitle] = useState("");
   const [newItem, setNewItem] = useState({ name: "", link: "", price: "" });
   const [shareEmail, setShareEmail] = useState<{ [key: number]: string }>({});
@@ -50,6 +50,10 @@ export default function App() {
     setError("");
     try {
       if (isRegister) {
+        if (authForm.password !== authForm.confirmedPassword) {
+          setError("Las contraseñas no coinciden. Por favor, verificalas.");
+          return;
+        }
         await api.register(authForm);
         alert("Usuario registrado. Ya podés iniciar sesión.");
         setIsRegister(false);
