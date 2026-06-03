@@ -25,6 +25,9 @@ export default function App() {
   const [sharedLists, setSharedLists] = useState<ListResponse[]>([]);
   const [selectedListId, setSelectedListId] = useState<number | null>(null);
 
+  // Loader
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (token) {
       loadData();
@@ -54,15 +57,20 @@ export default function App() {
           setError("Las contraseñas no coinciden. Por favor, verificalas.");
           return;
         }
+
+        setLoading(true);
         await api.register(authForm);
         alert("Usuario registrado. Ya podés iniciar sesión.");
         setIsRegister(false);
       } else {
+        setLoading(true);
         await api.login(authForm.email, authForm.password);
         setToken(localStorage.getItem("token"));
       }
     } catch (err: any) {
       setError(err.message || "Ocurrió un error");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -122,11 +130,12 @@ export default function App() {
         isRegister={isRegister}
         setIsRegister={setIsRegister}
         onSubmit={handleAuth}
+        loading={loading}
       >
         {isRegister ? (
-          <RegisterForm authForm={authForm} setAuthForm={setAuthForm} />
+          <RegisterForm authForm={authForm} setAuthForm={setAuthForm} loading={loading} />
         ) : (
-          <LoginForm authForm={authForm} setAuthForm={setAuthForm} />
+          <LoginForm authForm={authForm} setAuthForm={setAuthForm} loading={loading} />
         )}
       </AuthContainer>
     );

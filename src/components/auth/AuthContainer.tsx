@@ -5,6 +5,7 @@ interface AuthContainerProps {
   setIsRegister: (value: boolean) => void;
   onSubmit: (e: React.FormEvent) => void;
   children: React.ReactNode;
+  loading: boolean;
 }
 
 export default function AuthContainer({
@@ -13,7 +14,8 @@ export default function AuthContainer({
   isRegister,
   setIsRegister,
   onSubmit,
-  children
+  children,
+  loading
 }: AuthContainerProps) {
   return (
     <div className="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-dark">
@@ -36,8 +38,18 @@ export default function AuthContainer({
             {children}
           </div>
 
-          <button type="submit" className="btn btn-primary btn-lg w-100 mt-4 fw-bold shadow-sm">
-            {isRegister ? "Registrarme" : "Ingresar"}
+          <button 
+            type="submit" 
+            className="btn btn-primary btn-lg w-100 mt-4 fw-bold shadow-sm"
+            disabled={loading}>
+              {loading ? (
+                <>
+                  <div className="spinner-border spinner-border-sm" role="status"></div>
+                  <span>Espere un momento...</span>
+                </>
+              ) : (
+                isRegister ? "Registrarme" : "Ingresar"
+              )}
           </button>
         </form>
       </div>
@@ -48,8 +60,9 @@ export default function AuthContainer({
           <span>
             ¿Ya tenés cuenta?{" "}
             <button 
-              onClick={() => setIsRegister(false)} 
+              onClick={() => !loading && setIsRegister(false)} 
               className="btn btn-link p-0 text-primary fw-semibold text-decoration-none align-baseline small"
+              disabled={loading}
             >
               Logueate
             </button>
@@ -58,8 +71,9 @@ export default function AuthContainer({
           <span>
             ¿No tenés cuenta?{" "}
             <button 
-              onClick={() => setIsRegister(true)} 
+              onClick={() => !loading && setIsRegister(true)} 
               className="btn btn-link p-0 text-primary fw-semibold text-decoration-none align-baseline small"
+              disabled={loading}
             >
               Registrate
             </button>
