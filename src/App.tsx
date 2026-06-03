@@ -133,9 +133,9 @@ export default function App() {
         loading={loading}
       >
         {isRegister ? (
-          <RegisterForm authForm={authForm} setAuthForm={setAuthForm} loading={loading} />
+          <RegisterForm authForm={authForm} setAuthForm={setAuthForm} />
         ) : (
-          <LoginForm authForm={authForm} setAuthForm={setAuthForm} loading={loading} />
+          <LoginForm authForm={authForm} setAuthForm={setAuthForm} />
         )}
       </AuthContainer>
     );
