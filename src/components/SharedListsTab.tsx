@@ -20,17 +20,17 @@ export default function SharedListsTab({ sharedLists, handleBuyItem }: SharedLis
                 
                 <div className="list-group list-group-flush mb-3">
                   {list.items.map(item => (
-                    <div key={item.id} className={`list-group-item d-flex justify-content-between align-items-center flex-wrap ${item.is_bought ? 'bg-success' : 'bg-secondary-subtle'}`}>
+                    <div key={item.id} className={`list-group-item ${item.is_bought ? 'bg-success' : 'bg-secondary-subtle'}`}>
                       <div>
                         <span className={`fw-medium ${item.is_bought ? 'text-light' : 'text-secondary'}`}>{item.name}</span>
                       </div>
                       <div>
-                        <span className={`ms-2 ${item.is_bought ? 'text-white' : 'text-muted'}`}>Precio: {item.price ? `(₡{item.price})` : `N/A`}</span> 
+                        <span className={`${item.is_bought ? 'text-white' : 'text-muted'}`}>Precio: {item.price ? `₡${item.price}` : `N/A`}</span> 
                       </div>
                       <div className="">
                         {item.link && (
                           <a href={item.link} target="_blank" 
-                            className={`btn btn-link btn-sm text-decoration-none ${item.is_bought ? 'text-white text-decoration-underline' : ''}`}
+                            className={`btn-link btn-sm text-decoration-none ${item.is_bought ? 'text-white text-decoration-underline' : ''}`}
                           >Link</a>
                         )}
                       </div>

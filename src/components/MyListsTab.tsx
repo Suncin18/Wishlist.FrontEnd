@@ -55,7 +55,7 @@ export default function MyListsTab({
           <div key={list.id} className="col my-2">
             <div className="card h-100 shadow-sm border-secondary-subtle">
               
-              <div className="card-body d-flex flex-column justify-content-between">
+              <div className="card-body">
                 <div>
                   <h3 className="card-title h5 fw-bold text-dark mb-1">{list.title}</h3>
                   <p className="text-muted small mb-3">ID de Lista: {list.id}</p>
@@ -63,14 +63,14 @@ export default function MyListsTab({
                   {/* Lista de Ítems */}
                   <div className="list-group list-group-flush mb-3">
                     {list.items.map(item => (
-                      <div key={item.id} className="list-group-item px-0 d-flex justify-content-between align-items-center bg-transparent">
+                      <div key={item.id} className="list-group-item bg-transparent">
                         <div>
                           <span className="fw-medium text-secondary">{item.name}</span>
                         </div>
                         <div>
                           {item.price 
-                          ? <span className="text-muted ms-2">Precio: (₡{item.price})</span> 
-                          : <span className="text-muted ms-2">Precio: N/A</span>}
+                          ? <span className="text-muted">Precio: ₡{item.price}</span> 
+                          : <span className="text-muted">Precio: N/A</span>}
                         </div>
                         {item.link && (
                           <a href={item.link} target="_blank" rel="noreferrer" className="btn btn-link btn-sm p-0 text-decoration-none">
@@ -81,7 +81,8 @@ export default function MyListsTab({
                     ))}
                   </div>
                 </div>
-              
+              </div>
+              <div className='card-footer'>
                 {/* Acciones al pie de la tarjeta */}
                 <div className="mt-auto pt-3 border-t">
                   <button 
@@ -102,8 +103,6 @@ export default function MyListsTab({
                     </div>
                   )}
                 </div>
-              </div>
-              <div className='card-footer'>
                 <div className="input-group input-group-sm">
                   <input 
                     type="email" 

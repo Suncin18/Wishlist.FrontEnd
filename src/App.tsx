@@ -100,7 +100,10 @@ export default function App() {
   };
 
   const handleAddItem = async (listId: number) => {
-    if (!newItem.name.trim()) return;
+    if (!newItem.name.trim()) {
+      toast.error("Por favor, ingresá un nombre para el articulo");
+      return;
+    }
     try {
       await api.addItem(listId, {
         name: newItem.name,
