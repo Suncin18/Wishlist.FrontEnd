@@ -8,6 +8,28 @@ const getHeaders = () => {
   };
 };
 
+async function request(url: string, options: RequestInit = {}) {
+  const headers = {
+    ...getHeaders(),
+    ...(options.headers || {}),
+  };
+
+  const response = await fetch(url, { ...options, headers });
+
+  if (response.status === 401) {
+    localStorage.removeItem("token"); // Borramos el token vencido
+    window.location.reload();         // Forzamos la recarga de la página
+    throw new Error("Sesión expirada");
+  }
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || `Error: ${response.status}`);
+  }
+
+  return response.json();
+}
+
 export const api = {
   // Autenticación
   register: async (data: any) => {
@@ -39,49 +61,41 @@ export const api = {
 
   // Listas
   createList: async (title: string) => {
-    const res = await fetch(`${API_URL}/lists/`, {
+    return request(`${API_URL}/lists/`, {
       method: "POST",
       headers: getHeaders(),
       body: JSON.stringify({ title }),
     });
-    return res.json();
   },
 
   getMyLists: async () => {
-    const res = await fetch(`${API_URL}/lists/my-lists`, { headers: getHeaders() });
-    return res.json();
+    return request(`${API_URL}/lists/my-lists`);
   },
 
   getSharedLists: async () => {
-    const res = await fetch(`${API_URL}/lists/shared-with-me`, { headers: getHeaders() });
-    return res.json();
+    return request(`${API_URL}/lists/shared-with-me`);
   },
 
   addItem: async (listId: number, data: { name: string; link?: string; price?: number }) => {
-    const res = await fetch(`${API_URL}/lists/${listId}/items`, {
+    return request(`${API_URL}/lists/${listId}/items`, {
       method: "POST",
       headers: getHeaders(),
       body: JSON.stringify(data),
     });
-    if (!res.ok) throw new Error((await res.json()).detail);
-    return res.json();
   },
 
   shareList: async (listId: number, email: string) => {
-    const res = await fetch(`${API_URL}/lists/${listId}/share`, {
+    return request(`${API_URL}/lists/${listId}/share`, {
       method: "POST",
       headers: getHeaders(),
       body: JSON.stringify({ user_email: email }),
     });
-    if (!res.ok) throw new Error((await res.json()).detail);
-    return res.json();
   },
 
   buyItem: async (itemId: number) => {
-    const res = await fetch(`${API_URL}/lists/items/${itemId}/buy`, {
+    return request(`${API_URL}/lists/items/${itemId}/buy`, {
       method: "PUT",
       headers: getHeaders(),
     });
-    return res.json();
   }
 };

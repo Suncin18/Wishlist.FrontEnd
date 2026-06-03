@@ -36,18 +36,14 @@ export default function SharedListsTab({ sharedLists, handleBuyItem }: SharedLis
                       </div>
                       
                       <div className="w-100 mt-2">
-                        {item.is_bought ? (
-                          <span className="text-light text-xs font-semibold d-block text-center bg-white bg-opacity-25 rounded py-1">
-                            <CheckCircle size={14} className="d-inline-block align-text-top me-1" /> 
-                            <span>Comprado</span>
-                          </span>
-                        ) : (
-                          <button onClick={() => handleBuyItem(item.id)} className="btn btn-primary btn-sm w-100">
-                            Marcar Comprado
-                          </button>
-                        )}
+                        <button 
+                          onClick={() => handleBuyItem(item.id)} 
+                          className={`btn btn-sm w-100 ${item.is_bought 
+                            ? `btn-success` 
+                            : `btn-primary`}`}>
+                          {item.is_bought ? `Comprado (Click para desmarcar)` : `Marcar Comprado`}
+                        </button>
                       </div>
-
                     </div>
                   ))}
                 </div>
